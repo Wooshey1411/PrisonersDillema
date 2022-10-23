@@ -1,0 +1,8 @@
+CCC 7 7 7    #comment#
+CCD 3 3 9 #comment#
+CDC 3 9 3 #comment#
+DCC 9 3 3 ##
+CDD 0 5 5 ###
+DCD 5 0 5
+DDC 5 5 0
+DDD 1 1 1

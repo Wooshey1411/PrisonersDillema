@@ -1,0 +1,12 @@
+CCC 7 7 7
+CCD 3 3 9
+#Hello#
+CDC 3 9 3
+DCC 9 3 3
+#Why  i  realised it?#
+CDD 0 5 5
+DCD 5 0 5
+DDC 5 5 0
+DDD 1 1 1
+##
+##omg##
