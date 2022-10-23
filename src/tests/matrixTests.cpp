@@ -62,6 +62,10 @@ namespace{
         DilemmaMatrix m;
         EXPECT_ANY_THROW(m.fillMatrixFromFile("../src/tests/matrixes/unequalValuesInLine.txt"));
     }
+    TEST(MatrixInCorrectTest,spacesBetweenLitters){
+        DilemmaMatrix m;
+        EXPECT_ANY_THROW(m.fillMatrixFromFile("../src/tests/matrixes/spacesBetweenLitters.txt"));
+    }
     TEST(MatrixInCorrectTest,unequalLines){
         DilemmaMatrix m;
         EXPECT_ANY_THROW(m.fillMatrixFromFile("../src/tests/matrixes/unequalLines.txt"));

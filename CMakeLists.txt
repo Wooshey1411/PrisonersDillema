@@ -17,13 +17,12 @@ else()
 endif()
 
 
-#[[add_library(corelib OBJECT)]]
+add_library(corelib OBJECT src/matrix.cpp)
 
 add_executable(${exe_name} src/main.cpp)
-#[[target_link_libraries(${exe_name} corelib)]]
+target_link_libraries(${exe_name} corelib)
 
-
-#[[include(FetchContent)
+include(FetchContent)
 FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/58d77fa8070e8cec2dc1ed015d66b454c8d78850.zip
@@ -31,7 +30,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(${test_name})
+add_executable(${test_name} src/tests/matrixTests.cpp)
 target_link_libraries(${test_name} gtest_main)
-target_link_libraries(${test_name} corelib)]]
+target_link_libraries(${test_name} corelib)
 
