@@ -4,7 +4,6 @@
 #include "matrix.h"
 
 inline unsigned int startHash = 201; // hash of CCC
-inline unsigned int maxCountodDigits = 8;
 inline int hashError = -1;
 
 enum hashes{
@@ -53,7 +52,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         if(line.empty())
             continue;
         if(!std::regex_match(line.c_str(),res,reg)) // type of line: CCD 8   8  4
-            throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix e");
+            throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix");
 
         if(line[0] == '#')
             continue;
@@ -62,9 +61,9 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
             code[i] = line[pos];
             pos++;
         }
-        int codeHash = hash(code); // res[1] is part like CCC but always?
+        int codeHash = hash(code);
         if(codeHash < hashes::CCC || codeHash > hashes::DDD)
-            throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix c"); // impossible code ?
+            throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - impossible code"); // impossible code ?
 
         size_t lenOfLine = line.length();
         for (unsigned int i = 0; i < countOfColumns; ++i) {
@@ -85,7 +84,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         for (unsigned int i = 0; i < countOfColumns-1; ++i) { // C = C, D = D in columns
             for (unsigned int j = i+1; j < countOfColumns; ++j) {
                 if(code[i] == code[j] && buff[i] != buff[j])
-                    throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix b");
+                    throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - unequal values of code");
             }
         }
 
@@ -120,7 +119,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         }else{ // case when we have CCC 3 3 3 and CCC 5 5 5
             for (unsigned int i = 0; i < countOfColumns; ++i) {
                 if(matrix[codeHash][i]!=buff[i])
-                    throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix a");
+                    throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - no symmetry");
             }
         }
 
@@ -165,8 +164,6 @@ unsigned int DilemmaMatrix::getValue(std::string_view code, char type) {
     else
         return matrix[lineHash][2]; // in 2 pos always D if it not CCC
 }
-
-
 
 DilemmaMatrix::~DilemmaMatrix(){
     for (unsigned int i = 0; i < countOfLines; i++) {
