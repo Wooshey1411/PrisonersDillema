@@ -17,7 +17,7 @@ else()
 endif()
 
 
-add_library(corelib OBJECT src/matrix.cpp)
+add_library(corelib OBJECT src/matrix.cpp src/strategy/Strategies.cpp src/strategy/StrategyFactory.cpp)
 
 add_executable(${exe_name} src/main.cpp)
 target_link_libraries(${exe_name} corelib)

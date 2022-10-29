@@ -39,7 +39,7 @@ DilemmaMatrix::DilemmaMatrix(){
 void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
     std::ifstream in(path);
     if(!in)
-        throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: File doesn't exists");
+        throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: File doesn't exist");
     std::string line;
     auto buff = std::make_unique<unsigned int[]>(countOfColumns);
     std::string code = "AAA";
