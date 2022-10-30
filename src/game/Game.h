@@ -4,8 +4,6 @@
 #include "../matrix.h"
 #include <vector>
 
-inline const int countOfPlayers = 3;
-
 class Game{
 protected:
     std::vector<struct NameAndPointer> _players;
