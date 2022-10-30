@@ -1,4 +1,5 @@
 #include <map>
+#include <memory>
 
 inline const unsigned int countOfLines = 4;
 inline const unsigned int countOfColumns = 3;

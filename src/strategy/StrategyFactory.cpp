@@ -1,8 +1,10 @@
 #include "StrategyFactory.h"
+#include <memory>
 
 template<class type>
-Strategy* createStrategy(){
-    return new type;
+std::shared_ptr<Strategy> createStrategy(){
+    auto a = std::make_shared<type>();
+    return a;
 }
 
 StrategyFactory::StrategyFactory() {
@@ -11,12 +13,12 @@ StrategyFactory::StrategyFactory() {
     strategies["Alternation"] = createStrategy<Alternation>;
 }
 
-StrategyFactory::~StrategyFactory() {}
+StrategyFactory::~StrategyFactory() = default;
 
-Strategy *StrategyFactory::createStrategyByName(const std::string& name){
-    std::map<std::string, Strategy* (*)()>::iterator it;
+std::shared_ptr<Strategy> StrategyFactory::createStrategyByName(const std::string& name){
+    std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
     it = strategies.find(name);
     if(it != strategies.end())
-    return it->second();
+      return it->second();
     throw std::runtime_error("StrategyFabric: Strategy with such name doesn't exist");
 }
