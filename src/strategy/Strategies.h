@@ -7,6 +7,12 @@ public:
     ~OnlyBetray() override;
 };
 
+class OnlyCooperate : public Strategy{
+public:
+    char step() override;
+    ~OnlyCooperate() override;
+};
+
 class Random : public Strategy{
 public:
     Random();
@@ -21,4 +27,13 @@ public:
     Alternation();
     char step() override;
     ~Alternation() override;
+};
+
+class BetrayEveryThird : public Strategy{
+private:
+    unsigned int counter;
+public:
+    BetrayEveryThird();
+    char step() override;
+    ~BetrayEveryThird();
 };

@@ -48,3 +48,59 @@ DetailedGame::~DetailedGame() {
     delete[] _points;
     delete[] _code;
 }
+
+void TournamentGame::addPlayers() {
+    _factory.getAllStrategies(_allStrategies);
+}
+
+void TournamentGame::addPlayers(std::vector<std::string> players) {
+    for (unsigned int i = 0; i < players.size(); ++i) {
+        _allStrategies.push_back(_factory.createStrategyByName(players.at(0)));
+    }
+}
+
+void TournamentGame::organizeTheGame() {
+    unsigned int maxPoints = 0;
+    std::string nameOfBestPlayer;
+
+
+    for (unsigned int i = 0; i < _allStrategies.size() - 2; ++i) {
+        for (unsigned int j = i+1; j < _allStrategies.size() - 1; ++j) {
+            for (unsigned int k = j+1; k < _allStrategies.size(); ++k) {
+
+                addPlayer(_allStrategies[i].name);
+                addPlayer(_allStrategies[j].name);
+                addPlayer(_allStrategies[k].name);
+
+                for (unsigned int l = 0; l < _countOfSteps; ++l) {
+                    step();
+                }
+
+                std::cout << "Players: ";
+                for (unsigned int l = 0; l < countOfPlayers; ++l) {
+                    std::cout << _players[l].name << " ";
+                    if(_points[l] > maxPoints){
+                        maxPoints = _points[l];
+                        nameOfBestPlayer = _players[l].name;
+                    }
+                }
+
+                std::cout << "Points: ";
+                for (unsigned int l = 0; l < countOfPlayers; ++l) {
+                    std:: cout << _points[l] << " ";
+                    _points[l] = 0;
+                    _players.pop_back();
+                }
+                std::cout << std::endl;
+            }
+        }
+    }
+
+    std::cout << "Best player:" << nameOfBestPlayer << " his points:" << maxPoints << std::endl;
+
+}
+
+TournamentGame::~TournamentGame() {
+    delete[] _points;
+    delete[] _code;
+}

@@ -8,7 +8,7 @@ inline const int countOfPlayers = 3;
 
 class Game{
 protected:
-    std::vector<std::shared_ptr<Strategy>> _players;
+    std::vector<struct NameAndPointer> _players;
     DilemmaMatrix _matrix;
     StrategyFactory _factory;
     unsigned int* _points;

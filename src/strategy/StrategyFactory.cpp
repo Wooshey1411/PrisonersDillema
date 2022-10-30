@@ -11,14 +11,28 @@ StrategyFactory::StrategyFactory() {
     strategies["OnlyBetray"] = createStrategy<OnlyBetray>;
     strategies["Random"] = createStrategy<Random>;
     strategies["Alternation"] = createStrategy<Alternation>;
+    strategies["OnlyCooperate"] = createStrategy<OnlyCooperate>;
+    strategies["BetrayEveryThird"] = createStrategy<BetrayEveryThird>;
 }
 
 StrategyFactory::~StrategyFactory() = default;
 
-std::shared_ptr<Strategy> StrategyFactory::createStrategyByName(const std::string& name){
+struct NameAndPointer StrategyFactory::createStrategyByName(const std::string& name){
     std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
     it = strategies.find(name);
-    if(it != strategies.end())
-      return it->second();
+    if(it != strategies.end()) {
+        struct NameAndPointer nap = {it->second(),it->first};
+        return nap;
+    }
     throw std::runtime_error("StrategyFabric: Strategy with such name doesn't exist");
+}
+
+void StrategyFactory::getAllStrategies(std::vector<struct NameAndPointer>& container){
+    std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
+    it = strategies.begin();
+    for (unsigned int i = 0; i < strategies.size(); ++i) {
+        struct NameAndPointer val = {it->second(),it->first};
+        container.push_back(val);
+        it++;
+    }
 }

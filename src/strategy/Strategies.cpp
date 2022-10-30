@@ -5,6 +5,12 @@ char OnlyBetray::step() {
 }
 OnlyBetray::~OnlyBetray() = default;
 
+OnlyCooperate::~OnlyCooperate() = default;
+
+char OnlyCooperate::step() {
+    return 'C';
+}
+
 Random::Random(){
     srand(time(nullptr));
 }
@@ -33,3 +39,16 @@ char Alternation::step(){
     }
 }
 Alternation::~Alternation() = default;
+
+BetrayEveryThird::BetrayEveryThird(){
+    counter = 1;
+}
+
+char BetrayEveryThird::step() {
+    if (counter % 3 == 0)
+        return 'D';
+    else
+        return 'C';
+}
+
+BetrayEveryThird::~BetrayEveryThird() = default;
