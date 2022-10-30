@@ -8,6 +8,8 @@ set(exe_name ${PROJECT_NAME})
 
 set(test_name test)
 
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)

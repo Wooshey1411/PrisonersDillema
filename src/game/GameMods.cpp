@@ -1,12 +1,12 @@
 #include "GameMods.h"
 
-void NotDetailedGame::organizeTheGame() {
+void FastGame::organizeTheGame() {
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         step();
     }
 }
 
-NotDetailedGame::~NotDetailedGame()  {
+FastGame::~FastGame()  {
     delete[] _points;
     delete[] _code;
 }
@@ -53,9 +53,9 @@ void TournamentGame::addPlayers() {
     _factory.getAllStrategies(_allStrategies);
 }
 
-void TournamentGame::addPlayers(std::vector<std::string> players) {
-    for (unsigned int i = 0; i < players.size(); ++i) {
-        _allStrategies.push_back(_factory.createStrategyByName(players.at(0)));
+void TournamentGame::addPlayers(const std::vector<std::string>& players) {
+    for (auto & player : players) {
+        _allStrategies.push_back(_factory.createStrategyByName(player));
     }
 }
 

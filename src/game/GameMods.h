@@ -1,11 +1,11 @@
 #pragma once
 #include "Game.h"
-class NotDetailedGame : public Game{
+class FastGame : public Game{
 public:
     void organizeTheGame() override;
-    NotDetailedGame(const std::string& pathToMatrix,unsigned int countOfSteps)
+    FastGame(const std::string& pathToMatrix,unsigned int countOfSteps)
     : Game(pathToMatrix, countOfSteps){};
-    ~NotDetailedGame() override;
+    ~FastGame() override;
 };
 
 class DetailedGame : public Game{
@@ -25,6 +25,6 @@ public:
     TournamentGame(const std::string& pathToMatrix,unsigned int countOfSteps)
         : Game(pathToMatrix, countOfSteps){};
     void addPlayers();
-    void addPlayers(std::vector<std::string>);
+    void addPlayers(const std::vector<std::string>&);
     ~TournamentGame() override;
 };
