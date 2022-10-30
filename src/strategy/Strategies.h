@@ -1,6 +1,5 @@
 #pragma once
 #include "Strategy.h"
-#include <ctime>
 
 class OnlyBetray : public Strategy{
 public:
