@@ -1,9 +1,16 @@
 #include "GameMods.h"
 
 void FastGame::organizeTheGame() {
+    std::vector<std::string> names;
+    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+        names.push_back(_players[i].name);
+    }
+    _storageO->recordThePlayers(names);
+
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         step();
     }
+    _storageO->recordTheGame();
 }
 
 FastGame::~FastGame()  {

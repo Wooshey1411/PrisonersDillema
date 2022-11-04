@@ -6,3 +6,4 @@ public:
     virtual char step() = 0;
     virtual ~Strategy() = default;
 };
+

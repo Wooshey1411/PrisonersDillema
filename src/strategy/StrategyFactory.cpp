@@ -17,21 +17,21 @@ StrategyFactory::StrategyFactory() {
 
 StrategyFactory::~StrategyFactory() = default;
 
-struct NameAndPointer StrategyFactory::createStrategyByName(const std::string& name){
+struct DataAndPointer StrategyFactory::createStrategyByName(const std::string& name){
     std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
     it = strategies.find(name);
     if(it != strategies.end()) {
-        struct NameAndPointer nap = {it->second(),it->first};
-        return nap;
+        struct DataAndPointer dap = {it->second(),it->first,false};
+        return dap;
     }
     throw std::runtime_error("StrategyFabric: Strategy with such name doesn't exist");
 }
 
-void StrategyFactory::getAllStrategies(std::vector<struct NameAndPointer>& container){
+void StrategyFactory::getAllStrategies(std::vector<struct DataAndPointer>& container){
     std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
     it = strategies.begin();
     for (unsigned int i = 0; i < strategies.size(); ++i) {
-        struct NameAndPointer val = {it->second(),it->first};
+        struct DataAndPointer val = {it->second(),it->first,false};
         container.push_back(val);
         it++;
     }

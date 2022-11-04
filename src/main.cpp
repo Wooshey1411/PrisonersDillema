@@ -3,7 +3,6 @@
 #include <regex>
 #include <vector>
 
-inline int countOfArguments = 6;
 struct Params{
     std::vector<std::string> players;
     std::string gameMode;
@@ -14,17 +13,18 @@ struct Params{
 
 
 int  main(int argc, char* argv[]) {
-    if(argc != countOfArguments){
+    if(argc < 1){
         std::cout << "Wrong number of arguments";
         return 0;
         }
     struct Params inputParams;
-    unsigned int argument = 1;
+    int argument = 1;
+
 //region players
     std::cmatch res;
     std::regex regular(R"((-players)=([a-zA-Z]+[+]?)+[a-zA-Z]$)");
     if(!std::regex_match(argv[argument], res, regular)){
-        std::cout << "Wrong first argument!";
+        std::cout << "Wrong players argument!";
         return 0;
     }
     regular = R"(([a-zA-Z]+))";
@@ -35,82 +35,83 @@ int  main(int argc, char* argv[]) {
     for (auto i = iterator; i != end; i++)
     {
         inputParams.players.push_back(i->str());
-  //      std::cout << i->str() << std::endl;
     }
     argument++;
 //endregion
 
 //region gameMode
-
     regular = R"((-mode)=([a-zA-Z]+))";
     if(!std::regex_match(argv[argument],res,regular)) {
-        std::cout << "Wrong second argument!";
+        std::cout << "Wrong mode argument!";
         return 0;
     }
     str = (std::string)argv[argument];
     regular = R"(([a-zA-Z]+))";
     iterator = {str.cbegin(),str.cend(),regular};
     iterator++;
-  //  std::cout<< iterator->str() << std::endl;
     inputParams.gameMode = iterator->str();
     argument++;
 //endregion
 
 //region steps
     regular = R"((-steps)=([1-9]{1})([0-9]{0,9}))";
-    if(!std::regex_match(argv[argument],res,regular)){
-        std::cout << "Wrong third argument!";
-        return 0;
+    if(argument < argc && std::regex_match(argv[argument],res,regular)) {
+
+        inputParams.countOfSteps = 0;
+        unsigned int pos = 7; // position of first digit
+        while (true) {
+            if (argv[argument][pos] == '\0')
+                break;
+            inputParams.countOfSteps = inputParams.countOfSteps * 10 + (argv[3][pos] - '0');
+            pos++;
+        }
+        argument++;
+    }else {
+        std::cout << "No data about count of steps. Uses default value = 10" << std::endl;
+        inputParams.countOfSteps = 10;
     }
-    inputParams.countOfSteps = 0;
-    unsigned int pos = 7; // position of first digit
-    while (true){
-        if(argv[argument][pos] == '\0')
-            break;
-        inputParams.countOfSteps= inputParams.countOfSteps*10 + (argv[3][pos] - '0');
-        pos++;
-    }
-//    std::cout << inputParams.countOfSteps << std::endl;
-    argument++;
+
 //endregion
 
 //region dataPath
     regular = R"((-data)=(.+))";
-    if(!std::regex_match(argv[argument],res,regular)) {
-        std::cout << "Wrong fourth argument!";
-        return 0;
+    if(argument < argc && std::regex_match(argv[argument],res,regular)) {
+        str = (std::string) argv[argument];
+        regular = R"(=(.+))";
+        iterator = {str.cbegin(), str.cend(), regular};
+        inputParams.dataPath = iterator->str().erase(0, 1);
+        argument++;
+    }else{
+        std::cout << "No data file. The game will not be recorded" << std::endl;
+        inputParams.dataPath = noData;
     }
-    str = (std::string)argv[argument];
-    regular = R"(=(.+))";
-    iterator = {str.cbegin(),str.cend(),regular};
-    inputParams.dataPath = iterator->str().erase(0,1);
- //   std::cout<< inputParams.dataPath << std::endl;
-    argument++;
 //endregion
 
 //region matrixPath
     regular = R"((-matrix)=(.+))";
-    if(!std::regex_match(argv[argument],res,regular)) {
-        std::cout << "Wrong fifth argument!";
-        return 0;
+    if(argument < argc && std::regex_match(argv[argument],res,regular)) {
+        str = (std::string) argv[argument];
+        regular = R"(=(.+))";
+        iterator = {str.cbegin(), str.cend(), regular};
+        inputParams.matrixPath = iterator->str().erase(0, 1);
+    }else{
+        std::cout << "No matrix file. Uses default matrix" << std::endl;
+        inputParams.matrixPath = noData;
     }
-    str = (std::string)argv[argument];
-    regular = R"(=(.+))";
-    iterator = {str.cbegin(),str.cend(),regular};
-    inputParams.matrixPath = iterator->str().erase(0,1);
-   // std::cout<< inputParams.matrixPath << std::endl;
 //endregion
+
+
     if(inputParams.gameMode == "detailed"){
-        DetailedGame game = *new DetailedGame(inputParams.matrixPath,inputParams.countOfSteps);
-        for (int i = 0; i < countOfPlayers; ++i) {
+        DetailedGame game = *new DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        for (unsigned int i = 0; i < countOfPlayers; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
         game.organizeTheGame();
         return 0;
     }
     if(inputParams.gameMode == "fast"){
-        FastGame game = *new FastGame(inputParams.matrixPath,inputParams.countOfSteps);
-        for (int i = 0; i < countOfPlayers; ++i) {
+        FastGame game = *new FastGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        for (unsigned int i = 0; i < countOfPlayers; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
         game.organizeTheGame();
@@ -118,7 +119,7 @@ int  main(int argc, char* argv[]) {
         return 0;
     }
     if(inputParams.gameMode == "tournament"){
-        TournamentGame game = *new TournamentGame(inputParams.matrixPath,inputParams.countOfSteps);
+        TournamentGame game = *new TournamentGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         if (inputParams.players[0] == "all")
             game.addPlayers();
         else

@@ -52,3 +52,4 @@ char BetrayEveryThird::step() {
 }
 
 BetrayEveryThird::~BetrayEveryThird() = default;
+

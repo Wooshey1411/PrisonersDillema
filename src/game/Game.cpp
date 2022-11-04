@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(const std::string& pathToMatrix,unsigned int countOfSteps)
+Game::Game(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
 :_countOfSteps(countOfSteps){
     _matrix.fillMatrixFromFile(pathToMatrix);
     _points = new unsigned int[countOfPlayers];
@@ -9,6 +9,7 @@ Game::Game(const std::string& pathToMatrix,unsigned int countOfSteps)
         _points[i] = 0;
     }
     _code[countOfPlayers] = '\0';
+    _storageO = new StorageO(pathToData,countOfSteps);
 }
 
 void Game::addPlayer(const std::string& name) {
@@ -26,7 +27,7 @@ void Game::step() {
         else
             _points[i] += _matrix.getValue(_code,'D');
     }
-
+    _storageO->recordTheStep(_code);
 }
 
 

@@ -35,5 +35,5 @@ private:
 public:
     BetrayEveryThird();
     char step() override;
-    ~BetrayEveryThird();
+    ~BetrayEveryThird() override;
 };

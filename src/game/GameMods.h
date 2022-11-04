@@ -3,8 +3,8 @@
 class FastGame : public Game{
 public:
     void organizeTheGame() override;
-    FastGame(const std::string& pathToMatrix,unsigned int countOfSteps)
-    : Game(pathToMatrix, countOfSteps){};
+    FastGame(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
+    : Game(pathToMatrix, pathToData , countOfSteps){};
     ~FastGame() override;
 };
 
@@ -13,17 +13,17 @@ private:
     bool detailedStep(unsigned int step);
 public:
     void organizeTheGame() override;
-    DetailedGame(const std::string& pathToMatrix,unsigned int countOfSteps)
-            : Game(pathToMatrix, countOfSteps){};
+    DetailedGame(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
+            : Game(pathToMatrix, pathToData , countOfSteps){};
     ~DetailedGame() override;
 };
 
 class TournamentGame : public Game{
-    std::vector<struct NameAndPointer> _allStrategies;
+    std::vector<struct DataAndPointer> _allStrategies;
 public:
     void organizeTheGame() override;
-    TournamentGame(const std::string& pathToMatrix,unsigned int countOfSteps)
-        : Game(pathToMatrix, countOfSteps){};
+    TournamentGame(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
+            : Game(pathToMatrix, pathToData , countOfSteps){};
     void addPlayers();
     void addPlayers(const std::vector<std::string>&);
     ~TournamentGame() override;
