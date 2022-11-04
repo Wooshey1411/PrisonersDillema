@@ -9,16 +9,24 @@ Game::Game(const std::string& pathToMatrix, const std::string& pathToData, unsig
         _points[i] = 0;
     }
     _code[countOfPlayers] = '\0';
-    _storageO = new StorageO(pathToData,countOfSteps);
+    _storage = new Storage(pathToData,countOfSteps);
 }
 
 void Game::addPlayer(const std::string& name) {
     _players.push_back(_factory.createStrategyByName(name));
 }
 
+std::vector<std::string> Game::getNames() {
+    std::vector<std::string> names;
+    for (auto & _player : _players) {
+        names.push_back(_player.name);
+    }
+    return names;
+}
+
 void Game::step() {
     for (unsigned int i = 0; i < countOfPlayers; ++i) {
-        _code[i] = _players[i].strategy->step();
+            _code[i] = _players[i].strategy->step(_storage);
     }
 
     for (unsigned int i = 0; i < countOfPlayers; ++i) {
@@ -27,7 +35,7 @@ void Game::step() {
         else
             _points[i] += _matrix.getValue(_code,'D');
     }
-    _storageO->recordTheStep(_code);
+    _storage->recordTheStep(_code);
 }
 
 

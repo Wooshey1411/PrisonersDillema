@@ -3,20 +3,20 @@
 
 class OnlyBetray : public Strategy{
 public:
-    char step() override;
+    char step(Storage*) override;
     ~OnlyBetray() override;
 };
 
 class OnlyCooperate : public Strategy{
 public:
-    char step() override;
+    char step(Storage*) override;
     ~OnlyCooperate() override;
 };
 
 class Random : public Strategy{
 public:
     Random();
-    char step() override;
+    char step(Storage*) override;
     ~Random() override;
 };
 
@@ -25,7 +25,7 @@ private:
     char prevStep;
 public:
     Alternation();
-    char step() override;
+    char step(Storage*) override;
     ~Alternation() override;
 };
 
@@ -34,6 +34,16 @@ private:
     unsigned int counter;
 public:
     BetrayEveryThird();
-    char step() override;
+    char step(Storage*) override;
     ~BetrayEveryThird() override;
+};
+
+class Betrayed : public Strategy{
+private:
+    bool _isBetrayed;
+    bool _isFirstStep;
+public:
+    Betrayed();
+    char step(Storage*) override;
+    ~Betrayed() override;
 };

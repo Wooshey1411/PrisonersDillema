@@ -2,7 +2,7 @@
 #include "../strategy/StrategyFactory.h"
 #include "../matrix.h"
 #include <vector>
-#include "../storage/StorageO.h"
+#include "../storage/Storage.h"
 
 class Game{
 protected:
@@ -11,8 +11,9 @@ protected:
     StrategyFactory _factory;
     unsigned int* _points;
     char* _code;
-    StorageO* _storageO;
+    Storage* _storage;
     void step();
+    std::vector<std::string> getNames();
     unsigned int _countOfSteps;
 public:
     Game(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps);

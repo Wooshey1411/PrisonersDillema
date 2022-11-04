@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
+#include "../storage/Storage.h"
 
 class Strategy{
 public:
-    virtual char step() = 0;
+    virtual char step(Storage*) = 0;
     virtual ~Strategy() = default;
 };
-

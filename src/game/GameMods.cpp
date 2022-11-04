@@ -1,16 +1,12 @@
 #include "GameMods.h"
 
 void FastGame::organizeTheGame() {
-    std::vector<std::string> names;
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
-        names.push_back(_players[i].name);
-    }
-    _storageO->recordThePlayers(names);
+    _storage->recordThePlayers(getNames());
 
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         step();
     }
-    _storageO->recordTheGame();
+    _storage->recordTheGame(_points);
 }
 
 FastGame::~FastGame()  {
@@ -43,12 +39,13 @@ bool DetailedGame::detailedStep(unsigned int stepNum) {
 }
 
 void DetailedGame::organizeTheGame() {
+    _storage->recordThePlayers(getNames());
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         bool stopper = detailedStep(i+1);
         if(stopper)
             break;
     }
-
+    _storage->recordTheGame(_points);
 }
 
 DetailedGame::~DetailedGame() {
@@ -78,7 +75,7 @@ void TournamentGame::organizeTheGame() {
                 addPlayer(_allStrategies[i].name);
                 addPlayer(_allStrategies[j].name);
                 addPlayer(_allStrategies[k].name);
-
+                _storage->recordThePlayers(getNames());
                 for (unsigned int l = 0; l < _countOfSteps; ++l) {
                     step();
                 }
@@ -91,7 +88,7 @@ void TournamentGame::organizeTheGame() {
                         nameOfBestPlayer = _players[l].name;
                     }
                 }
-
+                _storage->recordTheGame(_points);
                 std::cout << "Points: ";
                 for (unsigned int l = 0; l < countOfPlayers; ++l) {
                     std:: cout << _points[l] << " ";
