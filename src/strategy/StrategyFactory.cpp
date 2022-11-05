@@ -16,6 +16,8 @@ StrategyFactory::StrategyFactory() {
     strategies["BetrayEveryThird"] = createStrategy<BetrayEveryThird>;
     strategies["Betrayed"] = createStrategy<Betrayed>;
     strategies["Repeater"] = createStrategy<Repeater>;
+    strategies["Popular"] = createStrategy<Popular>;
+    strategies["Addition"] = createStrategy<Addition>;
 }
 
 StrategyFactory::~StrategyFactory() = default;

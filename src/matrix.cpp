@@ -37,16 +37,21 @@ DilemmaMatrix::DilemmaMatrix(){
 }
 
 void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
-    std::ifstream in(path);
-    if(!in) {
+    std::ifstream in;
+    in.open(path);
+
+    if(!in.is_open()) {
+
         if(path != noData)
             std::cout << "Matrix in this path doesn't exist! Uses default matrix" << std::endl;
+
         matrix[hashes::CCC][0]=7; matrix[hashes::CCC][1]=7; matrix[hashes::CCC][2]=7;
         matrix[hashes::CCD][0]=3; matrix[hashes::CCD][1]=3; matrix[hashes::CCD][2]=9;
         matrix[hashes::CDD][0]=0; matrix[hashes::CDD][1]=5; matrix[hashes::CDD][2]=5;
         matrix[hashes::DDD][0]=1; matrix[hashes::DDD][1]=1; matrix[hashes::DDD][2]=1;
         return;
     }
+
     std::string line;
     auto buff = std::make_unique<unsigned int[]>(countOfColumns);
     std::string code = "AAA";

@@ -62,7 +62,7 @@ Betrayed::Betrayed() {
 char Betrayed::step(Storage* s) {
     if(_isFirstStep) {
         _isFirstStep = false;
-        return 'C';
+        return defaultChoice;
     }
     if(!_isBetrayed) {
         std::string l = s->getLastStep();
@@ -84,9 +84,63 @@ Repeater::Repeater():_pos(0){}
 char Repeater::step(Storage* s) {
     std::string st = s->getStepFromPrev(_pos);
     if(st == noData)
-        return 'C';
+        return defaultChoice;
     _pos++;
     return st[s->Winner()-1];
 }
 
 Repeater::~Repeater() = default;
+
+Popular::Popular():_pos(0) {}
+
+char Popular::step(Storage* s) {
+    std::string  st = s->getStepFromPrev(_pos);
+    if(st == noData)
+        return defaultChoice;
+    _pos++;
+    unsigned int countC = 0;
+    unsigned int countD = 0;
+    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+        if(st[i] == 'C')
+            countC++;
+        else
+            countD++;
+    }
+    if (countC >= countD)
+        return 'C';
+    else
+        return 'D';
+}
+
+Popular::~Popular() = default;
+
+Addition::Addition():_pos(0),_counter(0) {srand(time(nullptr));}
+
+char Addition::step(Storage* s) {
+    std::string st = s->getStepFromPrev(_pos);
+    if (st == noData){
+        int num = rand() % 2;
+        if(num == 0)
+            return 'C';
+        return 'D';
+    }
+    _pos++;
+    _counter++;
+    if(_counter % 2 == 0)
+        return st[s->Winner()-1];
+
+    unsigned int countC = 0;
+    unsigned int countD = 0;
+    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+        if(st[i] == 'C')
+            countC++;
+        else
+            countD++;
+    }
+    if (countC >= countD)
+        return 'C';
+    else
+        return 'D';
+}
+
+Addition::~Addition() = default;

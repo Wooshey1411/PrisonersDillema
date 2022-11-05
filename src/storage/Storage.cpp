@@ -4,7 +4,18 @@
 
 Storage::Storage(const std::string& path, unsigned int countOfSteps)
 :_countOfSteps(countOfSteps),_currGameStep(0){
-    _out.open(path,std::ios::app);
+    std::fstream file;
+    file.open(path);
+    if(!file) {
+        if(path != noData)
+            std::cout << "No data file" << std::endl;
+        _isWritable = false;
+    }
+    else {
+        _isWritable = true;
+        _out.open(path,std::ios::app);
+    }
+    file.close();
     _currGame = new char*[_countOfSteps];
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         _currGame[i] = new char[countOfPlayers];
@@ -64,7 +75,7 @@ Storage::Storage(const std::string& path, unsigned int countOfSteps)
 }
 
 void Storage::recordThePlayers(const std::vector<std::string>& players) {
-    if(!_out.is_open())
+    if(!_isWritable)
         return;
     for (auto & player : players) {
         _out << player << " ";
@@ -82,10 +93,8 @@ void Storage::recordTheStep(const char *code) {
 }
 
 void Storage::recordTheGame(const unsigned int *points) {
-    if(!_out.is_open()){
-       // std::cout << "Data file doesn't exist! Game wouldn't be write";
+    if(!_isWritable)
         return;
-    }
 
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         for (unsigned int j = 0; j < countOfPlayers; ++j) {
@@ -125,7 +134,7 @@ std::string Storage::getStepFromPrev(unsigned int pos) {
 }
 
 Storage::~Storage() {
-    if(_out.is_open())
+    if(_isWritable)
         _out.close();
     if(_in.is_open()) {
         for (unsigned int i = 0; i < _countOfStepsPrev; ++i) {

@@ -15,6 +15,7 @@ private:
     char** _prevGame;
     unsigned int _countOfStepsPrev;
     bool _correctInput;
+    bool _isWritable;
 public:
     unsigned int Winner() const {return _winnerOfPrev;};
     std::string getLastStep();

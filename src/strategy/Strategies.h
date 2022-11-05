@@ -56,3 +56,22 @@ public:
     char step(Storage*) override;
     ~Repeater();
 };
+
+class Popular : public Strategy{
+private:
+    unsigned int _pos;
+public:
+    Popular();
+    char step(Storage *) override;
+    ~Popular();
+};
+
+class Addition : public Strategy{
+private:
+    unsigned int _pos;
+    unsigned int _counter;
+public:
+    Addition();
+    char step(Storage *) override;
+    ~Addition();
+};

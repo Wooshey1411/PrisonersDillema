@@ -18,6 +18,9 @@ int  main(int argc, char* argv[]) {
         return 0;
         }
     struct Params inputParams;
+    inputParams.dataPath = noData;
+    inputParams.matrixPath = noData;
+    inputParams.countOfSteps = defaultCountOfSteps;
     int argument = 1;
 
 //region players
@@ -66,10 +69,8 @@ int  main(int argc, char* argv[]) {
             pos++;
         }
         argument++;
-    }else {
+    }else
         std::cout << "No data about count of steps. Uses default value = 10" << std::endl;
-        inputParams.countOfSteps = 10;
-    }
 
 //endregion
 
@@ -81,10 +82,8 @@ int  main(int argc, char* argv[]) {
         iterator = {str.cbegin(), str.cend(), regular};
         inputParams.dataPath = iterator->str().erase(0, 1);
         argument++;
-    }else{
+    }else
         std::cout << "No data file. The game will not be recorded" << std::endl;
-        inputParams.dataPath = noData;
-    }
 //endregion
 
 //region matrixPath
@@ -94,10 +93,8 @@ int  main(int argc, char* argv[]) {
         regular = R"(=(.+))";
         iterator = {str.cbegin(), str.cend(), regular};
         inputParams.matrixPath = iterator->str().erase(0, 1);
-    }else{
+    }else
         std::cout << "No matrix file. Uses default matrix" << std::endl;
-        inputParams.matrixPath = noData;
-    }
 //endregion
 
 
