@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "../config.h"
+#include "../Config.h"
 
 class Storage{
 private:

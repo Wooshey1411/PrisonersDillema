@@ -19,8 +19,8 @@ else()
 endif()
 
 
-add_library(corelib OBJECT src/matrix.cpp src/strategy/Strategies.cpp src/strategy/StrategyFactory.cpp src/game/GameMods.cpp src/game/Game.cpp
-         src/storage/Storage.cpp)
+add_library(corelib OBJECT src/Matrix.cpp src/strategy/Strategies.cpp src/strategy/StrategyFactory.cpp src/game/GameMods.cpp src/game/Game.cpp
+         src/storage/Storage.cpp src/MainParams.cpp)
 
 add_executable(${exe_name} src/main.cpp)
 target_link_libraries(${exe_name} corelib)

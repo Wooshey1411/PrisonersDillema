@@ -12,7 +12,7 @@ char OnlyCooperate::step(Storage*) {
 }
 
 Random::Random(){
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 char Random::step(Storage*){
     int num;
@@ -114,7 +114,7 @@ char Popular::step(Storage* s) {
 
 Popular::~Popular() = default;
 
-Addition::Addition():_pos(0),_counter(0) {srand(time(nullptr));}
+Addition::Addition():_pos(0),_counter(0) {srand(static_cast<unsigned int>(time(nullptr)));}
 
 char Addition::step(Storage* s) {
     std::string st = s->getStepFromPrev(_pos);

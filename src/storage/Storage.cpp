@@ -103,7 +103,7 @@ void Storage::recordTheGame(const unsigned int *points) {
         _out << std::endl;
     }
     unsigned int maxPoints = 0;
-    unsigned short pos = 0;
+    unsigned int pos = 0;
     for (unsigned int i = 0; i < countOfPlayers; ++i) {
         if(points[i] > maxPoints){
             maxPoints = points[i];

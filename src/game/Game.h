@@ -1,6 +1,6 @@
 #pragma once
 #include "../strategy/StrategyFactory.h"
-#include "../matrix.h"
+#include "../Matrix.h"
 #include <vector>
 #include "../storage/Storage.h"
 
