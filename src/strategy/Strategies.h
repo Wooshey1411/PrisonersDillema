@@ -47,3 +47,12 @@ public:
     char step(Storage*) override;
     ~Betrayed() override;
 };
+
+class Repeater : public Strategy{
+private:
+    unsigned int _pos;
+public:
+    Repeater();
+    char step(Storage*) override;
+    ~Repeater();
+};

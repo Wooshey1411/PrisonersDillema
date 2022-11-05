@@ -78,3 +78,15 @@ char Betrayed::step(Storage* s) {
 }
 
 Betrayed::~Betrayed() = default;
+
+Repeater::Repeater():_pos(0){}
+
+char Repeater::step(Storage* s) {
+    std::string st = s->getStepFromPrev(_pos);
+    if(st == noData)
+        return 'C';
+    _pos++;
+    return st[s->Winner()-1];
+}
+
+Repeater::~Repeater() = default;
