@@ -32,7 +32,7 @@ DilemmaMatrix::DilemmaMatrix(){
         for (unsigned int j = 0; j < countOfColumns; ++j) {
             line[j] = 0;
         }
-        matrix[startHash+i] = line;
+        _matrix[startHash+i] = line;
     }
 }
 
@@ -45,10 +45,10 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         if(path != noData)
             std::cout << "Matrix in this path doesn't exist! Uses default matrix" << std::endl;
 
-        matrix[hashes::CCC][0]=7; matrix[hashes::CCC][1]=7; matrix[hashes::CCC][2]=7;
-        matrix[hashes::CCD][0]=3; matrix[hashes::CCD][1]=3; matrix[hashes::CCD][2]=9;
-        matrix[hashes::CDD][0]=0; matrix[hashes::CDD][1]=5; matrix[hashes::CDD][2]=5;
-        matrix[hashes::DDD][0]=1; matrix[hashes::DDD][1]=1; matrix[hashes::DDD][2]=1;
+        _matrix[hashes::CCC][0]=7; _matrix[hashes::CCC][1]=7; _matrix[hashes::CCC][2]=7;
+        _matrix[hashes::CCD][0]=3; _matrix[hashes::CCD][1]=3; _matrix[hashes::CCD][2]=9;
+        _matrix[hashes::CDD][0]=0; _matrix[hashes::CDD][1]=5; _matrix[hashes::CDD][2]=5;
+        _matrix[hashes::DDD][0]=1; _matrix[hashes::DDD][1]=1; _matrix[hashes::DDD][2]=1;
         return;
     }
 
@@ -117,7 +117,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
 
         bool newLine = true;
         for (unsigned int i = 0; i < countOfColumns; ++i) { // unfilled line is 0 0 0
-            if(matrix[codeHash][i] != 0) {
+            if(_matrix[codeHash][i] != 0) {
                 newLine = false;
                 break;
             }
@@ -126,11 +126,11 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         if(newLine){
             parsed++;
             for (unsigned int i = 0; i < countOfColumns; ++i) {
-                matrix[codeHash][i]=buff[i];
+                _matrix[codeHash][i]=buff[i];
             }
         }else{ // case when we have CCC 3 3 3 and CCC 5 5 5
             for (unsigned int i = 0; i < countOfColumns; ++i) {
-                if(matrix[codeHash][i]!=buff[i])
+                if(_matrix[codeHash][i]!=buff[i])
                     throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - no symmetry");
             }
         }
@@ -142,23 +142,23 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
     in.close();
 
     // d0 > c0 > d1 > c1 > d2 > c2
-    if(matrix[hashes::CCD][2] <= matrix[hashes::CCC][0] || // d0 <= c0
-            matrix[hashes::CCC][0]<= matrix[hashes::CDD][2] || // c0 <= d1
-            matrix[hashes::CDD][2] <= matrix[hashes::CCD][0] || // d1 <= c1
-            matrix[hashes::CCD][0] <= matrix[hashes::DDD][0] || // c1 <= d2
-            matrix[hashes::DDD][0] <= matrix[hashes::CDD][0]) // d2 <= c2
+    if(_matrix[hashes::CCD][2] <= _matrix[hashes::CCC][0] || // d0 <= c0
+            _matrix[hashes::CCC][0]<= _matrix[hashes::CDD][2] || // c0 <= d1
+            _matrix[hashes::CDD][2] <= _matrix[hashes::CCD][0] || // d1 <= c1
+            _matrix[hashes::CCD][0] <= _matrix[hashes::DDD][0] || // c1 <= d2
+            _matrix[hashes::DDD][0] <= _matrix[hashes::CDD][0]) // d2 <= c2
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: d0 > c0 > d1 > c1 > d2 > c2 - false");
 
     // 3 * c0 > 2 * c1 + d0
-    if((3*matrix[hashes::CCC][0]) <= (2*matrix[hashes::CCD][0] + matrix[hashes::CCD][2]))
+    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CCD][0] + _matrix[hashes::CCD][2]))
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 2 * c1 + d0 - false");
 
     // 3 * c0 > 2 * d1 + c2
-    if((3*matrix[hashes::CCC][0]) <= (2*matrix[hashes::CDD][2] + matrix[hashes::CDD][0]))
+    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CDD][2] + _matrix[hashes::CDD][0]))
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 2 * d1 + c2 - false");
 
     // 3 * c0 > 3 * d2
-    if((3*matrix[hashes::CCC][0]) <= (3*matrix[hashes::DDD][0]))
+    if((3*_matrix[hashes::CCC][0]) <= (3*_matrix[hashes::DDD][0]))
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 3 * d2 - false");
 
 }
@@ -172,14 +172,14 @@ unsigned int DilemmaMatrix::getValue(std::string_view code, char type) {
     if ((type == 'C' && lineHash == hashes::DDD) || (type == 'D' && lineHash == hashes::CCC))
         throw std::runtime_error("DilemmaMatrix::getValue: For such type line doesn't exists");
     if(type == 'C')
-        return matrix[lineHash][0]; // in 0 pos always C if it not DDD
+        return _matrix[lineHash][0]; // in 0 pos always C if it not DDD
     else
-        return matrix[lineHash][2]; // in 2 pos always D if it not CCC
+        return _matrix[lineHash][2]; // in 2 pos always D if it not CCC
 }
 
 DilemmaMatrix::~DilemmaMatrix(){
     for (unsigned int i = 0; i < countOfLines; i++) {
-        delete[] matrix[startHash+i];
+        delete[] _matrix[startHash+i];
     }
 }
 

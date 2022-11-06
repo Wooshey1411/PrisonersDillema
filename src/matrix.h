@@ -1,11 +1,11 @@
 #pragma once
 #include <map>
 #include <memory>
-#include "config.h"
+#include "Config.h"
 
 class DilemmaMatrix{
 private:
-    std::map <unsigned int, unsigned int*> matrix;
+    std::map <unsigned int, unsigned int*> _matrix;
 public:
     DilemmaMatrix();
     ~DilemmaMatrix();
