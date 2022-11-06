@@ -9,23 +9,23 @@ std::shared_ptr<Strategy> createStrategy(){
 
 
 StrategyFactory::StrategyFactory() {
-    strategies["OnlyBetray"] = createStrategy<OnlyBetray>;
-    strategies["Random"] = createStrategy<Random>;
-    strategies["Alternation"] = createStrategy<Alternation>;
-    strategies["OnlyCooperate"] = createStrategy<OnlyCooperate>;
-    strategies["BetrayEveryThird"] = createStrategy<BetrayEveryThird>;
-    strategies["Betrayed"] = createStrategy<Betrayed>;
-    strategies["Repeater"] = createStrategy<Repeater>;
-    strategies["Popular"] = createStrategy<Popular>;
-    strategies["Addition"] = createStrategy<Addition>;
+    _strategies["OnlyBetray"] = createStrategy<OnlyBetray>;
+    _strategies["Random"] = createStrategy<Random>;
+    _strategies["Alternation"] = createStrategy<Alternation>;
+    _strategies["OnlyCooperate"] = createStrategy<OnlyCooperate>;
+    _strategies["BetrayEveryThird"] = createStrategy<BetrayEveryThird>;
+    _strategies["Betrayed"] = createStrategy<Betrayed>;
+    _strategies["Repeater"] = createStrategy<Repeater>;
+    _strategies["Popular"] = createStrategy<Popular>;
+    _strategies["Addition"] = createStrategy<Addition>;
 }
 
 StrategyFactory::~StrategyFactory() = default;
 
 struct DataAndPointer StrategyFactory::createStrategyByName(const std::string& name){
     std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
-    it = strategies.find(name);
-    if(it != strategies.end()) {
+    it = _strategies.find(name);
+    if(it != _strategies.end()) {
         struct DataAndPointer dap = {it->second(),it->first};
         return dap;
     }
@@ -34,8 +34,8 @@ struct DataAndPointer StrategyFactory::createStrategyByName(const std::string& n
 
 void StrategyFactory::getAllStrategies(std::vector<struct DataAndPointer>& container){
     std::map<std::string, std::shared_ptr<Strategy> (*)()>::iterator it;
-    it = strategies.begin();
-    for (unsigned int i = 0; i < strategies.size(); ++i) {
+    it = _strategies.begin();
+    for (unsigned int i = 0; i < _strategies.size(); ++i) {
         struct DataAndPointer val = {it->second(),it->first};
         container.push_back(val);
         it++;

@@ -17,7 +17,6 @@ FastGame::~FastGame()  {
 bool DetailedGame::detailedStep(unsigned int stepNum) {
     std::string in;
     std::cin >> in;
-   // std::cin >> in;
    if (in == "quit")
        return true;
     std::cout << "step:" << stepNum << " " << std::endl;

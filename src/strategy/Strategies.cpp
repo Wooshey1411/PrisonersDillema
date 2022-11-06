@@ -26,27 +26,24 @@ char Random::step(Storage*){
 }
 Random::~Random() = default;
 
-Alternation::Alternation(){
-    prevStep = 'C';
-}
+Alternation::Alternation():_prevStep('C') {}
+
 char Alternation::step(Storage*){
-    if (prevStep == 'C'){
-        prevStep = 'D';
-        return prevStep;
+    if (_prevStep == 'C'){
+        _prevStep = 'D';
+        return _prevStep;
     }else{
-        prevStep = 'C';
-        return prevStep;
+        _prevStep = 'C';
+        return _prevStep;
     }
 }
 Alternation::~Alternation() = default;
 
-BetrayEveryThird::BetrayEveryThird(){
-    counter = 0;
-}
+BetrayEveryThird::BetrayEveryThird():_counter(0) {}
 
 char BetrayEveryThird::step(Storage*) {
-    counter++;
-    if (counter % 3 == 0)
+    _counter++;
+    if (_counter % 3 == 0)
         return 'D';
     else
         return 'C';
@@ -114,7 +111,9 @@ char Popular::step(Storage* s) {
 
 Popular::~Popular() = default;
 
-Addition::Addition():_pos(0),_counter(0) {srand(static_cast<unsigned int>(time(nullptr)));}
+Addition::Addition():_pos(0),_counter(0) {
+    srand(static_cast<unsigned int>(time(nullptr)));
+}
 
 char Addition::step(Storage* s) {
     std::string st = s->getStepFromPrev(_pos);

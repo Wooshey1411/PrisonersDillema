@@ -50,7 +50,7 @@ Storage::Storage(const std::string& path, unsigned int countOfSteps)
             _in.clear();
             _countOfStepsPrev -= 2; // last number and empty string
             _in.seekg(point - temp);
-            std::getline(_in, str);
+            std::getline(_in, str); // we moved to names of strategies and go to next line - choises
 
             _prevGame = new char *[_countOfStepsPrev];
             for (unsigned int i = 0; i < _countOfStepsPrev; ++i) {

@@ -16,6 +16,7 @@ int  main(int argc, char* argv[]) {
     if(code != 0)
         return 0;
 
+
     if(inputParams.gameMode == "detailed"){
         DetailedGame game = *new DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         for (unsigned int i = 0; i < countOfPlayers; ++i) {

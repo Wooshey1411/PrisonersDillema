@@ -1,10 +1,8 @@
 #include "Game.h"
 
 Game::Game(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
-:_countOfSteps(countOfSteps){
+:_points(new unsigned int[countOfPlayers]),_code(new char[countOfPlayers+1]),_countOfSteps(countOfSteps){
     _matrix.fillMatrixFromFile(pathToMatrix);
-    _points = new unsigned int[countOfPlayers];
-    _code = new char[countOfPlayers+1];
     for (unsigned int i = 0; i < countOfPlayers; ++i) {
         _points[i] = 0;
     }

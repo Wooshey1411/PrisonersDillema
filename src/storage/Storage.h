@@ -18,11 +18,15 @@ private:
     bool _isWritable;
 public:
     unsigned int Winner() const {return _winnerOfPrev;};
+
+    explicit Storage(const std::string& path, unsigned int countOfSteps);
+
     std::string getLastStep();
     std::string getStepFromPrev(unsigned int pos);
-    explicit Storage(const std::string& path, unsigned int countOfSteps);
+
     void recordTheStep(const char* code);
     void recordThePlayers(const std::vector<std::string>& players);
     void recordTheGame(const unsigned int *points);
+
     ~Storage();
 };

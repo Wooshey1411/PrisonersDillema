@@ -22,7 +22,7 @@ public:
 
 class Alternation : public Strategy{
 private:
-    char prevStep;
+    char _prevStep;
 public:
     Alternation();
     char step(Storage*) override;
@@ -31,7 +31,7 @@ public:
 
 class BetrayEveryThird : public Strategy{
 private:
-    unsigned int counter;
+    unsigned int _counter;
 public:
     BetrayEveryThird();
     char step(Storage*) override;
@@ -54,7 +54,7 @@ private:
 public:
     Repeater();
     char step(Storage*) override;
-    ~Repeater();
+    ~Repeater() override;
 };
 
 class Popular : public Strategy{
@@ -63,7 +63,7 @@ private:
 public:
     Popular();
     char step(Storage *) override;
-    ~Popular();
+    ~Popular() override;
 };
 
 class Addition : public Strategy{
@@ -73,5 +73,5 @@ private:
 public:
     Addition();
     char step(Storage *) override;
-    ~Addition();
+    ~Addition() override;
 };

@@ -5,4 +5,4 @@ DCC 9 3 3
 CDD 0 5 5
 DCD 5 0 5
 DDC 5 5 0
-DDD 1 1 1
+DDD 1 1 D
