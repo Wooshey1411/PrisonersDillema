@@ -2,10 +2,6 @@
 #include "../matrix.h"
 
 namespace{
-    TEST(IOTest,FileDoesntExist){
-        DilemmaMatrix m;
-        EXPECT_ANY_THROW(m.fillMatrixFromFile("../src/tests/matrixes/fsdfewgxgf.txt"));
-    }
     TEST(MatrixCorrectTest,defaultMatrix){
         DilemmaMatrix m;
         m.fillMatrixFromFile("../src/tests/matrixes/default.txt");

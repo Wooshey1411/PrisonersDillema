@@ -22,11 +22,11 @@ bool DetailedGame::detailedStep(unsigned int stepNum) {
     std::cout << "step:" << stepNum << " " << std::endl;
     step();
     std::cout << "selection of strategies: ";
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         std::cout << _code[i] << " ";
     }
     std::cout << "points earned per step: ";
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             if (_code[i] == 'C')
                 std::cout << _matrix.getValue(_code,'C') << " ";
             else
@@ -80,7 +80,7 @@ void TournamentGame::organizeTheGame() {
                 }
 
                 std::cout << "Players: ";
-                for (unsigned int l = 0; l < countOfPlayers; ++l) {
+                for (unsigned int l = 0; l < COUNT_OF_PLAYERS; ++l) {
                     std::cout << _players[l].name << " ";
                     if(_points[l] > maxPoints){
                         maxPoints = _points[l];
@@ -89,7 +89,7 @@ void TournamentGame::organizeTheGame() {
                 }
                 _storage->recordTheGame(_points);
                 std::cout << "Points: ";
-                for (unsigned int l = 0; l < countOfPlayers; ++l) {
+                for (unsigned int l = 0; l < COUNT_OF_PLAYERS; ++l) {
                     std:: cout << _points[l] << " ";
                     _points[l] = 0;
                     _players.pop_back();

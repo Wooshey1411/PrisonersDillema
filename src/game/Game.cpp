@@ -1,12 +1,12 @@
 #include "Game.h"
 
 Game::Game(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
-:_points(new unsigned int[countOfPlayers]),_code(new char[countOfPlayers+1]),_countOfSteps(countOfSteps){
+:_points(new unsigned int[COUNT_OF_PLAYERS]),_code(new char[COUNT_OF_PLAYERS+1]),_countOfSteps(countOfSteps){
     _matrix.fillMatrixFromFile(pathToMatrix);
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         _points[i] = 0;
     }
-    _code[countOfPlayers] = '\0';
+    _code[COUNT_OF_PLAYERS] = '\0';
     _storage = new Storage(pathToData,countOfSteps);
 }
 
@@ -23,11 +23,11 @@ std::vector<std::string> Game::getNames() {
 }
 
 void Game::step() {
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             _code[i] = _players[i].strategy->step(_storage);
     }
 
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         if (_code[i] == 'C')
             _points[i] += _matrix.getValue(_code,'C');
         else
@@ -38,7 +38,7 @@ void Game::step() {
 
 
 void Game::printPoints() {
-    for (unsigned int i = 0; i < countOfPlayers; ++i) {
+    for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         std::cout << _points[i] << " ";
     }
     std::cout << std::endl;

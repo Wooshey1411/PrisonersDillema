@@ -11,23 +11,30 @@ int  main(int argc, char* argv[]) {
         printHelp();
         return 0;
     }
-    int code=0;
-    struct Params inputParams = getParams(argc,argv,code);
-    if(code != 0)
-        return 0;
+    int code;
+    Params inputParams;
+    code = getParams(argc,argv,inputParams);
 
+    if(code == codes::NO_PLAYERS_CODE){
+        std::cout << "Wrong players argument!" << std::endl;
+        return 0;
+    }
+    if(code == codes::NO_MODE_CODE){
+        std::cout << "Wrong mode argument!" << std::endl;
+        return 0;
+    }
 
     if(inputParams.gameMode == "detailed"){
-        DetailedGame game = *new DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
-        for (unsigned int i = 0; i < countOfPlayers; ++i) {
+        DetailedGame game = DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
         game.organizeTheGame();
         return 0;
     }
     if(inputParams.gameMode == "fast"){
-        FastGame game = *new FastGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
-        for (unsigned int i = 0; i < countOfPlayers; ++i) {
+        FastGame game = FastGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
         game.organizeTheGame();
@@ -35,7 +42,7 @@ int  main(int argc, char* argv[]) {
         return 0;
     }
     if(inputParams.gameMode == "tournament"){
-        TournamentGame game = *new TournamentGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        TournamentGame game = TournamentGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         if (inputParams.players[0] == "all")
             game.addPlayers();
         else
@@ -43,6 +50,7 @@ int  main(int argc, char* argv[]) {
         game.organizeTheGame();
         return 0;
     }
+
     std::cout << "This game mode doesn't exist!";
     return 0;
 }

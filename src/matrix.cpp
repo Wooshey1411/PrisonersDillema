@@ -15,7 +15,7 @@ enum hashes{
 
 int hash(std::string_view str){
     size_t size = str.length();
-    if(size != countOfColumns)
+    if(size != COUNT_OF_COLUMNS)
         return hashError;
     int res = 0;
     for (size_t i = 0; i < size; ++i) {
@@ -27,9 +27,9 @@ int hash(std::string_view str){
 }
 
 DilemmaMatrix::DilemmaMatrix(){
-    for (unsigned int i = 0; i < countOfLines; ++i) {
-        auto* line = new unsigned int[countOfColumns];
-        for (unsigned int j = 0; j < countOfColumns; ++j) {
+    for (unsigned int i = 0; i < COUNT_OF_LINES; ++i) {
+        auto* line = new unsigned int[COUNT_OF_COLUMNS];
+        for (unsigned int j = 0; j < COUNT_OF_COLUMNS; ++j) {
             line[j] = 0;
         }
         _matrix[startHash+i] = line;
@@ -41,10 +41,6 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
     in.open(path);
 
     if(!in.is_open()) {
-
-        if(path != noData)
-            std::cout << "Matrix in this path doesn't exist! Uses default matrix" << std::endl;
-
         _matrix[hashes::CCC][0]=7; _matrix[hashes::CCC][1]=7; _matrix[hashes::CCC][2]=7;
         _matrix[hashes::CCD][0]=3; _matrix[hashes::CCD][1]=3; _matrix[hashes::CCD][2]=9;
         _matrix[hashes::CDD][0]=0; _matrix[hashes::CDD][1]=5; _matrix[hashes::CDD][2]=5;
@@ -53,7 +49,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
     }
 
     std::string line;
-    auto buff = std::make_unique<unsigned int[]>(countOfColumns);
+    auto buff = std::make_unique<unsigned int[]>(COUNT_OF_COLUMNS);
     std::string code = "AAA";
     std::regex reg(R"(((^|&, )(([C,D]{3})(\s+)(([0-9]{1,12}(\s+))){2}([0-9]{1,12})(\s*))|(#)(.*)(#))+$)");
     std::cmatch res;
@@ -69,7 +65,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         if(line[0] == '#')
             continue;
         unsigned int pos = 0;
-        for (unsigned int i = 0; i < countOfColumns; ++i) {
+        for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
             code[i] = line[pos];
             pos++;
         }
@@ -78,7 +74,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
             throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - impossible code"); // impossible code ?
 
         size_t lenOfLine = line.length();
-        for (unsigned int i = 0; i < countOfColumns; ++i) {
+        for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
             unsigned int num = 0;
             bool isParsed = false;
             while(true){
@@ -93,15 +89,15 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
             buff[i] = num;
         }
 
-        for (unsigned int i = 0; i < countOfColumns-1; ++i) { // C = C, D = D in columns
-            for (unsigned int j = i+1; j < countOfColumns; ++j) {
+        for (unsigned int i = 0; i < COUNT_OF_COLUMNS-1; ++i) { // C = C, D = D in columns
+            for (unsigned int j = i+1; j < COUNT_OF_COLUMNS; ++j) {
                 if(code[i] == code[j] && buff[i] != buff[j])
                     throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - unequal values of code");
             }
         }
 
-        for (unsigned int i = 0; i < countOfColumns; i++){ // sort for exclude permutations CDC,DCC -> CCD
-            for (unsigned int j = countOfColumns - 1; j > i; j--) {
+        for (unsigned int i = 0; i < COUNT_OF_COLUMNS; i++){ // sort for exclude permutations CDC,DCC -> CCD
+            for (unsigned int j = COUNT_OF_COLUMNS - 1; j > i; j--) {
                 if(code[j-1] > code[j])
                 {
                     char temp = code[j-1];
@@ -116,7 +112,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
         }
 
         bool newLine = true;
-        for (unsigned int i = 0; i < countOfColumns; ++i) { // unfilled line is 0 0 0
+        for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) { // unfilled line is 0 0 0
             if(_matrix[codeHash][i] != 0) {
                 newLine = false;
                 break;
@@ -125,11 +121,11 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
 
         if(newLine){
             parsed++;
-            for (unsigned int i = 0; i < countOfColumns; ++i) {
+            for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
                 _matrix[codeHash][i]=buff[i];
             }
         }else{ // case when we have CCC 3 3 3 and CCC 5 5 5
-            for (unsigned int i = 0; i < countOfColumns; ++i) {
+            for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
                 if(_matrix[codeHash][i]!=buff[i])
                     throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - no symmetry");
             }
@@ -137,7 +133,7 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
 
 
     }
-    if(parsed != countOfLines)
+    if(parsed != COUNT_OF_LINES)
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad count of lines");
     in.close();
 
@@ -178,7 +174,7 @@ unsigned int DilemmaMatrix::getValue(std::string_view code, char type) {
 }
 
 DilemmaMatrix::~DilemmaMatrix(){
-    for (unsigned int i = 0; i < countOfLines; i++) {
+    for (unsigned int i = 0; i < COUNT_OF_LINES; i++) {
         delete[] _matrix[startHash+i];
     }
 }

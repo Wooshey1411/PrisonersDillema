@@ -1,7 +1,7 @@
 #pragma once
-inline const unsigned int countOfLines = 4;
-inline const unsigned int countOfColumns = 3;
-inline const unsigned int countOfPlayers = 3;
-inline const std::string noData = "none";
-inline const char defaultChoice = 'C';
-inline const unsigned int defaultCountOfSteps = 10;
+inline const unsigned int COUNT_OF_LINES = 4;
+inline const unsigned int COUNT_OF_COLUMNS = 3;
+inline const unsigned int COUNT_OF_PLAYERS = 3;
+inline const std::string NO_DATA = "none";
+inline const char DEFAULT_CHOICE = 'C';
+inline const unsigned int DEFAULT_COUNT_OF_STEPS = 10;
