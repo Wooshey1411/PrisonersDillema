@@ -9,17 +9,16 @@ public:
 };
 
 class DetailedGame : public Game{
-private:
-    bool detailedStep(unsigned int step);
 public:
     void organizeTheGame() override;
     DetailedGame(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
             : Game(pathToMatrix, pathToData , countOfSteps){};
     ~DetailedGame() override;
+private:
+    bool detailedStep(unsigned int step);
 };
 
 class TournamentGame : public Game{
-    std::vector<struct DataAndPointer> _allStrategies;
 public:
     void organizeTheGame() override;
     TournamentGame(const std::string& pathToMatrix, const std::string& pathToData, unsigned int countOfSteps)
@@ -27,4 +26,6 @@ public:
     void addPlayers();
     void addPlayers(const std::vector<std::string>&);
     ~TournamentGame() override;
+private:
+    std::vector<struct DataAndPointer> _allStrategies;
 };

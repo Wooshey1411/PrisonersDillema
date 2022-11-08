@@ -3,7 +3,7 @@
 #include "MainParams.h"
 
 int  main(int argc, char* argv[]) {
-    if(argc < 1){
+    if(argc < 2){
         std::cout << "Wrong number of arguments";
         return 0;
         }
@@ -19,12 +19,11 @@ int  main(int argc, char* argv[]) {
         std::cout << "Wrong players argument!" << std::endl;
         return 0;
     }
-    if(code == codes::NO_MODE_CODE){
-        std::cout << "Wrong mode argument!" << std::endl;
-        return 0;
-    }
-
     if(inputParams.gameMode == "detailed"){
+        if(inputParams.players.size() != COUNT_OF_PLAYERS){
+            std::cout << "No enough players" << std::endl;
+            return 0;
+        }
         DetailedGame game = DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
@@ -33,6 +32,10 @@ int  main(int argc, char* argv[]) {
         return 0;
     }
     if(inputParams.gameMode == "fast"){
+        if(inputParams.players.size() != COUNT_OF_PLAYERS){
+            std::cout << "No enough players" << std::endl;
+            return 0;
+        }
         FastGame game = FastGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
@@ -43,10 +46,16 @@ int  main(int argc, char* argv[]) {
     }
     if(inputParams.gameMode == "tournament"){
         TournamentGame game = TournamentGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
-        if (inputParams.players[0] == "all")
+        if (inputParams.players[0] == "all") {
             game.addPlayers();
-        else
+        }
+        else {
+            if(inputParams.players.size() != COUNT_OF_PLAYERS){
+                std::cout << "No enough players" << std::endl;
+                return 0;
+            }
             game.addPlayers(inputParams.players);
+        }
         game.organizeTheGame();
         return 0;
     }

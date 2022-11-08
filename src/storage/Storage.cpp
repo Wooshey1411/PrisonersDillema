@@ -6,8 +6,9 @@ Storage::Storage(const std::string& path, unsigned int countOfSteps)
 :_countOfSteps(countOfSteps),_currGameStep(0){
     std::fstream file;
     file.open(path);
-    if(!file)
+    if(!file) {
         _isWritable = false;
+    }
     else {
         _isWritable = true;
         _out.open(path,std::ios::app);
@@ -38,8 +39,9 @@ Storage::Storage(const std::string& path, unsigned int countOfSteps)
                 _countOfStepsPrev = pos;
                 pos = 0;
             }
-        if(_in.eof())
+        if(_in.eof()) {
             break;
+        }
         }
         if(point == 0) // no history. File corrupted
             _correctInput = false;
@@ -67,13 +69,15 @@ Storage::Storage(const std::string& path, unsigned int countOfSteps)
                 _winnerOfPrev = _winnerOfPrev * 10 + (i - '0');
             }
         }
-    }else
+    }else {
         _correctInput = false; // file doesn't opened => no data
+    }
 }
 
 void Storage::recordThePlayers(const std::vector<std::string>& players) {
-    if(!_isWritable)
+    if(!_isWritable) {
         return;
+    }
     for (auto & player : players) {
         _out << player << " ";
     }
@@ -81,8 +85,9 @@ void Storage::recordThePlayers(const std::vector<std::string>& players) {
 }
 
 void Storage::recordTheStep(const char *code) {
-    if(_currGameStep == _countOfSteps)
+    if(_currGameStep == _countOfSteps) {
         _currGameStep = 0;
+    }
     for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         _currGame[_currGameStep][i] = code[i];
     }
@@ -90,8 +95,9 @@ void Storage::recordTheStep(const char *code) {
 }
 
 void Storage::recordTheGame(const unsigned int *points) {
-    if(!_isWritable)
+    if(!_isWritable) {
         return;
+    }
 
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         for (unsigned int j = 0; j < COUNT_OF_PLAYERS; ++j) {
@@ -110,9 +116,10 @@ void Storage::recordTheGame(const unsigned int *points) {
     _out << pos << std::endl;
 }
 
-std::string Storage::getLastStep() {
-    if(_currGameStep == 0)
+std::string Storage::getLastStep() const{
+    if(_currGameStep == 0) {
         return NO_DATA;
+    }
     std::string res;
     for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         res.push_back(_currGame[_currGameStep-1][i]);
@@ -120,9 +127,10 @@ std::string Storage::getLastStep() {
     return res;
 }
 
-std::string Storage::getStepFromPrev(unsigned int pos) {
-    if(!_correctInput || pos >= _countOfStepsPrev)
+std::string Storage::getStepFromPrev(unsigned int pos) const {
+    if(!_correctInput || pos >= _countOfStepsPrev) {
         return NO_DATA;
+    }
     std::string res;
     for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
         res.push_back(_prevGame[pos][i]);
@@ -131,14 +139,11 @@ std::string Storage::getStepFromPrev(unsigned int pos) {
 }
 
 Storage::~Storage() {
-    if(_isWritable)
-        _out.close();
     if(_in.is_open()) {
         for (unsigned int i = 0; i < _countOfStepsPrev; ++i) {
             delete[] _prevGame[i];
         }
         delete[] _prevGame;
-        _in.close();
     }
 
     for (unsigned int i = 0; i < _countOfSteps; ++i) {

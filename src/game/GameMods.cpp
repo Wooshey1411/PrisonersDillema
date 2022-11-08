@@ -1,6 +1,8 @@
 #include "GameMods.h"
 
 void FastGame::organizeTheGame() {
+    if(_players.size() != COUNT_OF_PLAYERS)
+        throw std::runtime_error("FastGame::organizeTheGame: not enough players");
     _storage->recordThePlayers(getNames());
 
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
@@ -17,8 +19,9 @@ FastGame::~FastGame()  {
 bool DetailedGame::detailedStep(unsigned int stepNum) {
     std::string in;
     std::cin >> in;
-   if (in == "quit")
+   if (in == "quit") {
        return true;
+   }
     std::cout << "step:" << stepNum << " " << std::endl;
     step();
     std::cout << "selection of strategies: ";
@@ -27,10 +30,12 @@ bool DetailedGame::detailedStep(unsigned int stepNum) {
     }
     std::cout << "points earned per step: ";
     for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
-            if (_code[i] == 'C')
-                std::cout << _matrix.getValue(_code,'C') << " ";
-            else
-                std::cout << _matrix.getValue(_code,'D') << " ";
+            if (_code[i] == 'C') {
+                std::cout << _matrix.getValue(_code, 'C') << " ";
+            }
+            else {
+                std::cout << _matrix.getValue(_code, 'D') << " ";
+            }
     }
     std::cout << "points in sum: ";
     printPoints();
@@ -38,11 +43,14 @@ bool DetailedGame::detailedStep(unsigned int stepNum) {
 }
 
 void DetailedGame::organizeTheGame() {
+    if(_players.size() != COUNT_OF_PLAYERS)
+        throw std::runtime_error("DetailedGame::organizeTheGame: not enough players");
     _storage->recordThePlayers(getNames());
     for (unsigned int i = 0; i < _countOfSteps; ++i) {
         bool stopper = detailedStep(i+1);
-        if(stopper)
+        if(stopper) {
             break;
+        }
     }
     _storage->recordTheGame(_points);
 }
@@ -63,6 +71,8 @@ void TournamentGame::addPlayers(const std::vector<std::string>& players) {
 }
 
 void TournamentGame::organizeTheGame() {
+    if(_players.size() < COUNT_OF_PLAYERS)
+        throw std::runtime_error("TournamentGame::organizeTheGame: not enough players");
     unsigned int maxPoints = 0;
     std::string nameOfBestPlayer;
 

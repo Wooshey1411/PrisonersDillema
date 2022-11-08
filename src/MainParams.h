@@ -5,7 +5,6 @@
 enum codes{
     SUCCESS_CODE = 0,
     NO_PLAYERS_CODE,
-    NO_MODE_CODE,
     OTHER_CODE
 };
 

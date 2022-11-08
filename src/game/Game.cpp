@@ -28,10 +28,12 @@ void Game::step() {
     }
 
     for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
-        if (_code[i] == 'C')
-            _points[i] += _matrix.getValue(_code,'C');
-        else
-            _points[i] += _matrix.getValue(_code,'D');
+        if (_code[i] == 'C') {
+            _points[i] += _matrix.getValue(_code, 'C');
+        }
+        else {
+            _points[i] += _matrix.getValue(_code, 'D');
+        }
     }
     _storage->recordTheStep(_code);
 }
@@ -44,7 +46,4 @@ void Game::printPoints() {
     std::cout << std::endl;
 }
 
-Game::~Game() {
-    delete[] _points;
-    delete[] _code;
-}
+Game::~Game() = default;

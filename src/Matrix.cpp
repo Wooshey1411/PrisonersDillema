@@ -15,12 +15,14 @@ enum hashes{
 
 int hash(std::string_view str){
     size_t size = str.length();
-    if(size != COUNT_OF_COLUMNS)
+    if(size != COUNT_OF_COLUMNS){
         return hashError;
+    }
     int res = 0;
     for (size_t i = 0; i < size; ++i) {
-        if(str[i] != 'C' && str[i] != 'D')
+        if(str[i] != 'C' && str[i] != 'D') {
             return hashError;
+        }
         res+=str[i];
     }
     return res;
@@ -57,29 +59,33 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
     unsigned int parsed = 0;
     while (!in.eof()){
         std::getline(in,line);
-        if(line.empty())
+        if(line.empty()) {
             continue;
-        if(!std::regex_match(line.c_str(),res,reg)) // type of line: CCD 8   8  4
+        }
+        if(!std::regex_match(line.c_str(),res,reg)) { // type of line: CCD 8   8  4
             throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix");
+        }
 
-        if(line[0] == '#')
+        if(line[0] == '#') {
             continue;
+        }
         unsigned int pos = 0;
         for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
             code[i] = line[pos];
             pos++;
         }
         int codeHash = hash(code);
-        if(codeHash < hashes::CCC || codeHash > hashes::DDD)
+        if(codeHash < hashes::CCC || codeHash > hashes::DDD) {
             throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - impossible code"); // impossible code ?
-
+        }
         size_t lenOfLine = line.length();
         for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
             unsigned int num = 0;
             bool isParsed = false;
             while(true){
-                if(lenOfLine == pos || (line[pos] == ' ' && isParsed))
+                if(lenOfLine == pos || (line[pos] == ' ' && isParsed)) {
                     break;
+                }
                 if(line[pos] != ' ') {
                     num = num * 10 + (line[pos] - '0');
                     isParsed = true;
@@ -91,8 +97,9 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
 
         for (unsigned int i = 0; i < COUNT_OF_COLUMNS-1; ++i) { // C = C, D = D in columns
             for (unsigned int j = i+1; j < COUNT_OF_COLUMNS; ++j) {
-                if(code[i] == code[j] && buff[i] != buff[j])
+                if(code[i] == code[j] && buff[i] != buff[j]) {
                     throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - unequal values of code");
+                }
             }
         }
 
@@ -126,15 +133,17 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
             }
         }else{ // case when we have CCC 3 3 3 and CCC 5 5 5
             for (unsigned int i = 0; i < COUNT_OF_COLUMNS; ++i) {
-                if(_matrix[codeHash][i]!=buff[i])
+                if(_matrix[codeHash][i]!=buff[i]) {
                     throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad matrix - no symmetry");
+                }
             }
         }
 
 
     }
-    if(parsed != COUNT_OF_LINES)
+    if(parsed != COUNT_OF_LINES) {
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: Bad count of lines");
+    }
     in.close();
 
     // d0 > c0 > d1 > c1 > d2 > c2
@@ -142,35 +151,43 @@ void DilemmaMatrix::fillMatrixFromFile(const std::string& path){
             _matrix[hashes::CCC][0]<= _matrix[hashes::CDD][2] || // c0 <= d1
             _matrix[hashes::CDD][2] <= _matrix[hashes::CCD][0] || // d1 <= c1
             _matrix[hashes::CCD][0] <= _matrix[hashes::DDD][0] || // c1 <= d2
-            _matrix[hashes::DDD][0] <= _matrix[hashes::CDD][0]) // d2 <= c2
+            _matrix[hashes::DDD][0] <= _matrix[hashes::CDD][0]) { // d2 <= c2
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: d0 > c0 > d1 > c1 > d2 > c2 - false");
+    }
 
     // 3 * c0 > 2 * c1 + d0
-    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CCD][0] + _matrix[hashes::CCD][2]))
+    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CCD][0] + _matrix[hashes::CCD][2])) {
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 2 * c1 + d0 - false");
+    }
 
     // 3 * c0 > 2 * d1 + c2
-    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CDD][2] + _matrix[hashes::CDD][0]))
+    if((3*_matrix[hashes::CCC][0]) <= (2*_matrix[hashes::CDD][2] + _matrix[hashes::CDD][0])) {
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 2 * d1 + c2 - false");
+    }
 
     // 3 * c0 > 3 * d2
-    if((3*_matrix[hashes::CCC][0]) <= (3*_matrix[hashes::DDD][0]))
+    if((3*_matrix[hashes::CCC][0]) <= (3*_matrix[hashes::DDD][0])) {
         throw std::runtime_error("DilemmaMatrix::fillMatrixFromFile: 3 * c0 > 3 * d2 - false");
-
+    }
 }
 
 unsigned int DilemmaMatrix::getValue(std::string_view code, char type) {
     int lineHash = hash(code);
-    if (lineHash == hashError || lineHash < hashes::CCC || lineHash > hashes::DDD)
+    if (lineHash == hashError || lineHash < hashes::CCC || lineHash > hashes::DDD) {
         throw std::runtime_error("DilemmaMatrix::getValue: Line doesn't exists in matrix");
-    if(type != 'C' && type != 'D')
+    }
+    if(type != 'C' && type != 'D') {
         throw std::runtime_error("DilemmaMatrix::getValue: Wrong type");
-    if ((type == 'C' && lineHash == hashes::DDD) || (type == 'D' && lineHash == hashes::CCC))
+    }
+    if ((type == 'C' && lineHash == hashes::DDD) || (type == 'D' && lineHash == hashes::CCC)){
         throw std::runtime_error("DilemmaMatrix::getValue: For such type line doesn't exists");
-    if(type == 'C')
+    }
+    if(type == 'C') {
         return _matrix[lineHash][0]; // in 0 pos always C if it not DDD
-    else
+    }
+    else {
         return _matrix[lineHash][2]; // in 2 pos always D if it not CCC
+    }
 }
 
 DilemmaMatrix::~DilemmaMatrix(){

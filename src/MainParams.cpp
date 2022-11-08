@@ -13,8 +13,7 @@ int getPlayers(char* argv[], Params& inputParams, int &argument){
     std::sregex_iterator iterator{str.cbegin(),str.cend(),regular};
     iterator++;
     std::sregex_iterator end{};
-    for (auto i = iterator; i != end; i++)
-    {
+    for (auto i = iterator; i != end; i++){
         inputParams.players.push_back(i->str());
     }
     argument++;
@@ -22,18 +21,19 @@ int getPlayers(char* argv[], Params& inputParams, int &argument){
     return codes::SUCCESS_CODE;
 }
 
-int getMode(char* argv[], Params& inputParams, int &argument){
+int getMode(char* argv[], int argc, Params& inputParams, int &argument){
     std::regex regular(R"((-mode)=([a-zA-Z]+))");
-    if(!std::regex_match(argv[argument],regular)) {
-        return codes::NO_MODE_CODE;
+    if(argument < argc && !std::regex_match(argv[argument],regular)) {
+        std::string str = (std::string) argv[argument];
+        regular = R"(([a-zA-Z]+))";
+        std::sregex_iterator iterator{str.cbegin(), str.cend(), regular};
+        iterator++;
+        inputParams.gameMode = iterator->str();
+        argument++;
+        return codes::SUCCESS_CODE;
+    }else {
+        return codes::OTHER_CODE;
     }
-    std::string str = (std::string)argv[argument];
-    regular = R"(([a-zA-Z]+))";
-    std::sregex_iterator iterator{str.cbegin(),str.cend(),regular};
-    iterator++;
-    inputParams.gameMode = iterator->str();
-    argument++;
-    return codes::SUCCESS_CODE;
 }
 
 int getSteps(char* argv[], int argc, Params& inputParams, int &argument){
@@ -43,15 +43,17 @@ int getSteps(char* argv[], int argc, Params& inputParams, int &argument){
         inputParams.countOfSteps = 0;
         unsigned int pos = 7; // position of first digit
         while (true) {
-            if (argv[argument][pos] == '\0')
+            if (argv[argument][pos] == '\0') {
                 break;
+            }
             inputParams.countOfSteps = inputParams.countOfSteps * 10 + (argv[3][pos] - '0');
             pos++;
         }
         argument++;
         return codes::SUCCESS_CODE;
-    }else
+    }else {
         return codes::OTHER_CODE;
+    }
        // std::cout << "No data about count of steps. Uses default value = 10" << std::endl;
 }
 
@@ -64,8 +66,9 @@ int getDataPath(char* argv[], int argc, Params& inputParams, int &argument){
         inputParams.dataPath = iterator->str().erase(0, 1);
         argument++;
         return codes::SUCCESS_CODE;
-    }else
+    }else {
         return codes::OTHER_CODE;
+    }
         //std::cout << "No data file. The game will not be recorded" << std::endl;
 }
 
@@ -77,8 +80,9 @@ int getMatrixPath(char* argv[], int argc, Params& inputParams, int &argument){
         std::regex_iterator iterator = {str.cbegin(), str.cend(), regular};
         inputParams.matrixPath = iterator->str().erase(0, 1);
         return codes::SUCCESS_CODE;
-    }else
+    }else {
         return codes::OTHER_CODE;
+    }
         //std::cout << "No matrix file. Uses default matrix" << std::endl;
 }
 
@@ -86,14 +90,15 @@ int getParams(int argc, char* argv[], Params& inputParams){
     inputParams.dataPath = NO_DATA;
     inputParams.matrixPath = NO_DATA;
     inputParams.countOfSteps = DEFAULT_COUNT_OF_STEPS;
+    inputParams.gameMode = DEFAULT_MODE;
     int argument = 1;
 
-    if(getPlayers(argv,inputParams,argument) == codes::NO_PLAYERS_CODE)
+    if(getPlayers(argv,inputParams,argument) == codes::NO_PLAYERS_CODE) {
         return codes::NO_PLAYERS_CODE;
-    if(getMode(argv,inputParams,argument) == codes::NO_MODE_CODE)
-        return codes::NO_MODE_CODE;
+    }
 
-    for (int i = 0; i <= argc-argument; ++i) {
+    for (int i = 0; i < argc-argument; ++i) {
+        getMode(argv,argc,inputParams,argument);
         getSteps(argv,argc,inputParams,argument);
         getDataPath(argv,argc,inputParams,argument);
         getMatrixPath(argv,argc,inputParams,argument);
