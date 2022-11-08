@@ -71,7 +71,7 @@ void TournamentGame::addPlayers(const std::vector<std::string>& players) {
 }
 
 void TournamentGame::organizeTheGame() {
-    if(_players.size() < COUNT_OF_PLAYERS)
+    if(_allStrategies.size() < COUNT_OF_PLAYERS)
         throw std::runtime_error("TournamentGame::organizeTheGame: not enough players");
     unsigned int maxPoints = 0;
     std::string nameOfBestPlayer;

@@ -23,7 +23,7 @@ int getPlayers(char* argv[], Params& inputParams, int &argument){
 
 int getMode(char* argv[], int argc, Params& inputParams, int &argument){
     std::regex regular(R"((-mode)=([a-zA-Z]+))");
-    if(argument < argc && !std::regex_match(argv[argument],regular)) {
+    if(argument < argc && std::regex_match(argv[argument],regular)) {
         std::string str = (std::string) argv[argument];
         regular = R"(([a-zA-Z]+))";
         std::sregex_iterator iterator{str.cbegin(), str.cend(), regular};
@@ -46,7 +46,7 @@ int getSteps(char* argv[], int argc, Params& inputParams, int &argument){
             if (argv[argument][pos] == '\0') {
                 break;
             }
-            inputParams.countOfSteps = inputParams.countOfSteps * 10 + (argv[3][pos] - '0');
+            inputParams.countOfSteps = inputParams.countOfSteps * 10 + (argv[argument][pos] - '0');
             pos++;
         }
         argument++;
@@ -97,7 +97,7 @@ int getParams(int argc, char* argv[], Params& inputParams){
         return codes::NO_PLAYERS_CODE;
     }
 
-    for (int i = 0; i < argc-argument; ++i) {
+    for (int i = 0; i <= argc-argument; ++i) {
         getMode(argv,argc,inputParams,argument);
         getSteps(argv,argc,inputParams,argument);
         getDataPath(argv,argc,inputParams,argument);
