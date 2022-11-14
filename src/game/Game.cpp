@@ -46,4 +46,7 @@ void Game::printPoints() {
     std::cout << std::endl;
 }
 
-Game::~Game() = default;
+Game::~Game(){
+	delete[] _points;
+	delete[] _code;
+}

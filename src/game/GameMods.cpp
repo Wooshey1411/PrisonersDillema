@@ -11,11 +11,6 @@ void FastGame::organizeTheGame() {
     _storage->recordTheGame(_points);
 }
 
-FastGame::~FastGame()  {
-    delete[] _points;
-    delete[] _code;
-}
-
 bool DetailedGame::detailedStep(unsigned int stepNum) {
     std::string in;
     std::cin >> in;
@@ -53,11 +48,6 @@ void DetailedGame::organizeTheGame() {
         }
     }
     _storage->recordTheGame(_points);
-}
-
-DetailedGame::~DetailedGame() {
-    delete[] _points;
-    delete[] _code;
 }
 
 void TournamentGame::addPlayers() {
@@ -111,9 +101,4 @@ void TournamentGame::organizeTheGame() {
 
     std::cout << "Best player:" << nameOfBestPlayer << " his points:" << maxPoints << std::endl;
 
-}
-
-TournamentGame::~TournamentGame() {
-    delete[] _points;
-    delete[] _code;
 }

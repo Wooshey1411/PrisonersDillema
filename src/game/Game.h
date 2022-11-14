@@ -10,7 +10,7 @@ public:
     virtual void organizeTheGame() = 0;
     void addPlayer(const std::string& name);
     void printPoints();
-    virtual ~Game() = 0;
+    virtual ~Game();
 protected:
     std::vector<struct DataAndPointer> _players;
     DilemmaMatrix _matrix;

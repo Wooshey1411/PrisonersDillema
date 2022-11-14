@@ -24,7 +24,7 @@ int  main(int argc, char* argv[]) {
             std::cout << "No enough players" << std::endl;
             return 0;
         }
-        DetailedGame game = DetailedGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        DetailedGame game(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
@@ -36,7 +36,7 @@ int  main(int argc, char* argv[]) {
             std::cout << "No enough players" << std::endl;
             return 0;
         }
-        FastGame game = FastGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        FastGame game(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         for (unsigned int i = 0; i < COUNT_OF_PLAYERS; ++i) {
             game.addPlayer(inputParams.players[i]);
         }
@@ -45,7 +45,7 @@ int  main(int argc, char* argv[]) {
         return 0;
     }
     if(inputParams.gameMode == "tournament"){
-        TournamentGame game = TournamentGame(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
+        TournamentGame game(inputParams.matrixPath,inputParams.dataPath,inputParams.countOfSteps);
         if (inputParams.players[0] == "all") {
             game.addPlayers();
         }
